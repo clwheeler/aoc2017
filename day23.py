@@ -1,6 +1,7 @@
 import sys
 import re
 import collections
+import math
 
 from timeit import default_timer as timer
 
@@ -168,7 +169,6 @@ while tick_ct < 40:
 
 print runner_0.registers['h']
 
-global a, b, c, d, e, f, g, h
 a = 1
 b = 106700
 c = 123700
@@ -179,10 +179,48 @@ g = 2
 h = 0
 
 def simulate_processor():
-    # after line: 12, [1, 106700, 123700, 2, 40303, 1, 2, 0]
+    a, b, c, d, e, f, g, h = 0
 
-    global a, b, c, d, e, f, g, h
-    loop_ct = 0
+    a = 1
+    b = 106700
+    c = 123700
+    d = 2
+    e = 2
+    f = 1
+
+    g = 0
+
+    # 12
+    g = d
+    g = g * e
+    g = g - b
+    if g == 0:
+        f = 0
+    e = e + 1
+    g = e
+    g = g - b
+    if g != 0
+        GOTO 12
+
+    d = d + 1
+    g = d
+    g = g - b
+    if g != 0
+        GOTO 12
+
+    if f == 0:
+        h = h + 1
+
+    g = b
+    g = g - c
+    if g == 0:
+        print h
+        raise Exception()
+
+    b = b + 17
+    GOTO 12
+
+
 
     # while True:
     if True:
@@ -226,26 +264,50 @@ def simulate_processor_opt():
 
     global a, b, c, d, e, f, g, h
     loop_ct = 0
+    found = False
 
     while True:
+        print "b: {}, h = {}".format(b, h)
         for x in range(2, b):
-            while g != 0:
+            # print "x: {}".format(x)
+            for y in range(2, b / x):
+                # print "y: {}".format(y)
                 loop_ct += 1
-                g = (x * e) - b
-                if g == 0:
+                if (x * y) == b:
                     f = 0
-                e = e + 1
-                print "simulated opt: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-                if loop_ct == 4:
-                    return
-            print "simulated outer: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-
+                # print "opt inner: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
+                # if loop_ct == 4:
+                #     return
+            # print "opt outer: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
         if f == 0:
             h = h + 1
 
         if b == 123700:
+            print h
             raise ValueError('Halt')
 
         b = b + 17
 
-simulate_processor_opt()
+# simulate_processor_opt()
+
+def find_factors():
+    factor_found = False
+    b = 106700
+    h = 0
+
+    while b < 123700:
+        root = int(math.sqrt(b)) + 1
+        print b
+        for x in range(2, root):
+            for y in range(2, root):
+                if x * y == b:
+                    factor_found = True
+
+        if factor_found:
+            h += 1
+
+        b += 17
+
+    print h
+
+find_factors()
