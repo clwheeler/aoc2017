@@ -191,60 +191,25 @@ def simulate_processor():
     g = 0
 
     # 12
-    g = d
-    g = g * e
-    g = g - b
-    if g == 0:
-        f = 0
-    e = e + 1
-    g = e
-    g = g - b
-    if g != 0
-        GOTO 12
-
-    d = d + 1
-    g = d
-    g = g - b
-    if g != 0
-        GOTO 12
-
-    if f == 0:
-        h = h + 1
-
-    g = b
-    g = g - c
-    if g == 0:
-        print h
-        raise Exception()
-
-    b = b + 17
-    GOTO 12
-
-
-
-    # while True:
-    if True:
-        while g != 0:
-            while g != 0:
-                loop_ct += 1
+    while True:
+        while g == 0:
+            while g == 0:
                 g = (d * e) - b
                 if g == 0:
                     f = 0
                 e = e + 1
-                print "simulated inner: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-                if loop_ct == 4:
-                    return
+                g = e - b
             d = d + 1
-            g = d
-            g = g - b
-            print "simulated outer: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
+            g = d - b
+
         if f == 0:
             h = h + 1
 
-        g = b
+        g = b - 123700
 
-        if g == 123700:
-            raise ValueError('Halt')
+        if g == 0:
+            print "h = {}".format(h)
+            raise Exception("Halt OOB")
 
         b = b + 17
 
