@@ -122,7 +122,7 @@ while not HALT:
 def simulate_processor():
     mult_ct = 0
     # 0 == Debug
-    a = 0
+    a = 1
     b = 0
     c = 0
     d = 0
@@ -153,25 +153,28 @@ def simulate_processor():
             e = 2
             run_inner = True
             while run_inner:
-                mult_ct += 1
                 if d * e == b:
                     f = 0
+                if d * e > b:
+                    run_inner = False
                 e = e + 1
                 if e == b:
                     run_inner = False
             d = d + 1
-            if d == b:
+            if d > int(math.sqrt(b)):
                 run_outer = False
 
         if f == 0:
             h = h + 1
+
+        # print "{} / {}".format(b, c)
 
         if b == c:
             run_main = False
         else:
             b = b + 17
 
-    print "mult_ct: {}".format(mult_ct)
+    # print "mult_ct: {}".format(mult_ct)
     print "[{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
 
 simulate_processor()
