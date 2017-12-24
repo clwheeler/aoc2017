@@ -51,18 +51,7 @@ class COPROCESSER(object):
         self.registers = collections.defaultdict(int)
 
         self.inst_list = instructions
-        self.registers['a'] = 1
-        # self.registers['d'] = 100000
-        # [1, 106700, 123700, 2, 40303, 1, 2, 0]
-        self.registers['a'] = 1
-        self.registers['b'] = 106700
-        self.registers['c'] = 123700
-        self.registers['d'] = 2
-        self.registers['e'] = 40303
-        self.registers['f'] = 1
-        self.registers['g'] = 2
-        self.registers['h'] = 0
-        self.current_pos = 11
+        # self.registers['a'] = 0
 
 
     def send_message(self, val):
@@ -83,22 +72,14 @@ class COPROCESSER(object):
         instruction = self.inst_list[self.current_pos]
         # print instruction
         if instruction[COMMAND] == 'set':
-            # if instruction[TARGET] == 'd' and self.get_register_value(instruction[VALUE]) < 100000:
-            #     # print 'd'
-            #     # self.set_register('d', 100000)
-            # else:
             self.set_register(instruction[TARGET], self.get_register_value(instruction[VALUE]))
         elif instruction[COMMAND] == 'sub':
             old_val = self.get_register_value(instruction[TARGET])
             self.set_register(instruction[TARGET], old_val - self.get_register_value(instruction[VALUE]))
-            # if instruction[TARGET] == 'e' and instruction[VALUE] == -1:
-            #     if old_val < 106700:
-            #         print "skip e"
-            #         self.set_register(instruction[TARGET], 106700)
-
         elif instruction[COMMAND] == 'mul':
-            # COPROCESSER.mult_ct += 1
-            # print COPROCESSER.mult_ct
+            COPROCESSER.mult_ct += 1
+            print COPROCESSER.mult_ct
+
             old_val = self.get_register_value(instruction[TARGET])
             self.set_register(instruction[TARGET], old_val * self.get_register_value(instruction[VALUE]))
         elif instruction[COMMAND] == 'jnz':
@@ -117,25 +98,19 @@ class COPROCESSER(object):
             keys.append(self.registers[key])
         return keys
 
-HALT = True
+HALT = False
 
 runner_0 = COPROCESSER(parse_input_data(None), 0)
 
-tick_ct = 0
-last_h_value = 0
-
-
-# while not HALT:
-while tick_ct < 40:
-    tick_ct += 1
-
+while not HALT:
     if runner_0.current_pos < 0 or runner_0.current_pos >= len(runner_0.inst_list):
         print 'runner 0 OOB'
+        print '{}'.format(runner_0.get_register_display())
         HALT = True
         break
 
     val_0 = runner_0.execute_command()
-    print 'after line: {}, {}'.format(runner_0.current_pos + 1, runner_0.get_register_display())
+    # print 'after line: {}, {}'.format(runner_0.current_pos + 1, runner_0.get_register_display())
 
     # if tick_ct > 100000:
     #     print 'after line: {}, {}'.format(runner_0.current_pos + 1, runner_0.get_register_display())
@@ -143,171 +118,68 @@ while tick_ct < 40:
     if val_0 == 'inc':
         runner_0.current_pos += 1
 
-    if runner_0.registers['h'] != last_h_value:
-        last_h_value = runner_0.registers['h']
-        print last_h_value
-
-    # if tick_ct % 100000 == 0:
-        # runner_0.print_registers()
-            # registers = runner_0.itervalues()
-        # print "{} ticks, h = {}".format(tick_ct, runner_0.registers['h'])
-    # if val_1 == 'inc':
-    #     runner_1.current_pos += 1
-
-    # if val_0 == 'wait' and val_1 == 'wait':
-    #     print 'deadlock'
-    #     HALT = True
-
-    # if type(val_0) is int:
-    #     runner_1.send_message(val_0)
-    #     runner_0.current_pos += 1
-    # if type(val_1) is int:
-    #     runner_0.send_message(val_1)
-    #     send_val += 1
-    #     print send_val
-    #     runner_1.current_pos += 1
-
-print runner_0.registers['h']
-
-a = 1
-b = 106700
-c = 123700
-d = 2
-e = 40303
-f = 1
-g = 2
-h = 0
 
 def simulate_processor():
-    a, b, c, d, e, f, g, h = 0
-
-    a = 1
-    b = 106700
-    c = 123700
-    d = 2
-    e = 2
-    f = 1
-
+    m_ct = 0
+    a = 0
+    b = 0
+    c = 0
+    d = 0
+    e = 0
+    f = 0
     g = 0
+    h = 0
 
-    # 12
-    g = d
-    g = g * e
-    g = g - b
-    if g == 0:
-        f = 0
-    e = e + 1
-    g = e
-    g = g - b
-    if g != 0
-        GOTO 12
+    b = 67
+    c = b
 
-    d = d + 1
-    g = d
-    g = g - b
-    if g != 0
-        GOTO 12
+    if a != 0:
+        b = b * 100
+        m_ct += 1
+        b = b + 100000
+        c = b
+        c = c + 17000
+    else:
+        print "DEBUG"
 
-    if f == 0:
-        h = h + 1
+    run_main = True
 
-    g = b
-    g = g - c
-    if g == 0:
-        print h
-        raise Exception()
-
-    b = b + 17
-    GOTO 12
-
-
-
-    # while True:
-    if True:
-        while g != 0:
-            while g != 0:
-                loop_ct += 1
-                g = (d * e) - b
+    while run_main:
+        f = 1
+        d = 2
+        run_outer = True
+        while run_outer:
+            e = 2
+            run_inner = True
+            while run_inner:
+                g = d
+                g = g * e
+                g = g - b
                 if g == 0:
                     f = 0
                 e = e + 1
-                print "simulated inner: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-                if loop_ct == 4:
-                    return
+                g = e
+                g = g - b
+                if g == 0:
+                    run_inner = False
             d = d + 1
             g = d
             g = g - b
-            print "simulated outer: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
+            if g == 0:
+                run_outer = False
+
         if f == 0:
             h = h + 1
 
         g = b
+        g = g - c
 
-        if g == 123700:
-            raise ValueError('Halt')
+        print e
+        if g == 0:
+            run_main = False
+        else:
+            b = b + 17
 
-        b = b + 17
+    print "[{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
 
 simulate_processor()
-
-a = 1
-b = 106700
-c = 123700
-d = 2
-e = 40303
-f = 1
-g = 2
-h = 0
-
-def simulate_processor_opt():
-    # after line: 12, [1, 106700, 123700, 2, 40303, 1, 2, 0]
-
-    global a, b, c, d, e, f, g, h
-    loop_ct = 0
-    found = False
-
-    while True:
-        print "b: {}, h = {}".format(b, h)
-        for x in range(2, b):
-            # print "x: {}".format(x)
-            for y in range(2, b / x):
-                # print "y: {}".format(y)
-                loop_ct += 1
-                if (x * y) == b:
-                    f = 0
-                # print "opt inner: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-                # if loop_ct == 4:
-                #     return
-            # print "opt outer: [{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
-        if f == 0:
-            h = h + 1
-
-        if b == 123700:
-            print h
-            raise ValueError('Halt')
-
-        b = b + 17
-
-# simulate_processor_opt()
-
-def find_factors():
-    factor_found = False
-    b = 106700
-    h = 0
-
-    while b < 123700:
-        root = int(math.sqrt(b)) + 1
-        print b
-        for x in range(2, root):
-            for y in range(2, root):
-                if x * y == b:
-                    factor_found = True
-
-        if factor_found:
-            h += 1
-
-        b += 17
-
-    print h
-
-find_factors()
