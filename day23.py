@@ -153,20 +153,17 @@ def simulate_processor():
             e = 2
             run_inner = True
             while run_inner:
-                g = d
-                g = g * e
+                g = d * e
                 mult_ct += 1
                 g = g - b
                 if g == 0:
                     f = 0
                 e = e + 1
-                g = e
-                g = g - b
+                g = e - b
                 if g == 0:
                     run_inner = False
             d = d + 1
-            g = d
-            g = g - b
+            g = d - b
             if g == 0:
                 run_outer = False
 
