@@ -120,8 +120,7 @@ while not HALT:
 
 
 def simulate_processor():
-    m_ct = 0
-    a = 0
+    a = 1
     b = 0
     c = 0
     d = 0
@@ -135,7 +134,6 @@ def simulate_processor():
 
     if a != 0:
         b = b * 100
-        m_ct += 1
         b = b + 100000
         c = b
         c = c + 17000
