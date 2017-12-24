@@ -98,7 +98,7 @@ class COPROCESSER(object):
             keys.append(self.registers[key])
         return keys
 
-HALT = False
+HALT = True
 
 runner_0 = COPROCESSER(parse_input_data(None), 0)
 
@@ -120,7 +120,9 @@ while not HALT:
 
 
 def simulate_processor():
-    a = 1
+    mult_ct = 0
+    # 0 == Debug
+    a = 0
     b = 0
     c = 0
     d = 0
@@ -134,6 +136,7 @@ def simulate_processor():
 
     if a != 0:
         b = b * 100
+        mult_ct += 1
         b = b + 100000
         c = b
         c = c + 17000
@@ -152,6 +155,7 @@ def simulate_processor():
             while run_inner:
                 g = d
                 g = g * e
+                mult_ct += 1
                 g = g - b
                 if g == 0:
                     f = 0
@@ -172,12 +176,12 @@ def simulate_processor():
         g = b
         g = g - c
 
-        print e
         if g == 0:
             run_main = False
         else:
             b = b + 17
 
+    print "mult_ct: {}".format(mult_ct)
     print "[{}, {}, {}, {}, {}, {}, {}, {}]".format(a, b, c, d, e, f, g, h)
 
 simulate_processor()
